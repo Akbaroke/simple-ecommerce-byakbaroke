@@ -86,3 +86,29 @@ export const ProfileSchema = z.object({
     message: 'Contact must be less than 15 characters',
   }),
 });
+
+
+export const ProductSchema = z.object({
+  name: z
+    .string()
+    .min(1, {
+      message: 'Name is required',
+    })
+    .max(255, {
+      message: 'Name must be less than 255 characters',
+    }),
+  price: z.number().min(1, {
+    message: 'Price is required',
+  }),
+  brand: z
+    .string()
+    .min(1, {
+      message: 'Brand is required',
+    })
+    .max(255, {
+      message: 'Brand must be less than 255 characters',
+    }),
+  image: z.string().min(1, {
+    message: 'Image is required',
+  }),
+});
