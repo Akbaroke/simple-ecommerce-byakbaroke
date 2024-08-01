@@ -97,7 +97,8 @@ export default function ProductPage() {
     if (filterType === 'Updated At') {
       sortedProducts = sortedProducts.sort(
         (a, b) =>
-          new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
+          new Date(b.updatedAt as Date).getTime() -
+          new Date(a.updatedAt as Date).getTime()
       );
     } else if (filterType === 'High price') {
       sortedProducts = sortedProducts.sort((a, b) => b.price - a.price);
@@ -114,8 +115,8 @@ export default function ProductPage() {
         Notify({
           type: 'loading',
           message: 'Deleting product...',
-          id: 'delete-product-'+id,
-        })
+          id: 'delete-product-' + id,
+        });
         deleteProduct(token.token, id).then((res) => {
           if (res.error) {
             Notify({
@@ -130,12 +131,12 @@ export default function ProductPage() {
               message: res.success,
               id: 'delete-product-' + id,
             });
-            fetchProducts()
+            fetchProducts();
           }
         });
       }
     });
-  }
+  };
 
   return products.length === 0 ? (
     <div
@@ -265,7 +266,9 @@ export default function ProductPage() {
                       </Link>
                       <DialogConfirm
                         title="Delete Product"
-                        handleConfirm={() => handleDeleteProduct(product.id)}
+                        handleConfirm={() =>
+                          handleDeleteProduct(product.id as string)
+                        }
                         dialogText={`Are you sure you want to delete this product "${product.name}" ?`}>
                         <Button size="icon" variant="ghost" className="w-7 h-7">
                           <IoTrashOutline size={18} className="text-red-500" />

@@ -70,7 +70,7 @@ export default function AddProductPage() {
   };
 
   return (
-    <div className="mx-auto grid max-w-[59rem] flex-1 auto-rows-max gap-4">
+    <div className="mx-auto grid max-w-[59rem] flex-1 auto-rows-max gap-4 w-full">
       <div className="flex items-center gap-4">
         <Button
           variant="outline"
@@ -219,9 +219,7 @@ export default function AddProductPage() {
               <CardTitle>Preview</CardTitle>
             </CardHeader>
             <CardContent>
-              <CardProduct
-                data={form.watch()} 
-              />
+              <CardProduct data={form.watch()} />
             </CardContent>
           </Card>
         </div>

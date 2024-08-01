@@ -46,7 +46,7 @@ export default function Counting({
   };
 
   return (
-    <div className="flex items-center justify-center gap-4 border rounded-lg w-max p-1">
+    <div className="flex items-center justify-center gap-4 border rounded-lg w-max p-1 bg-background">
       <Button
         size="icon"
         variant="ghost"

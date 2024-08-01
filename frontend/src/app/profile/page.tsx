@@ -85,7 +85,7 @@ export default function Profile() {
 
   return (
     <div>
-      <Card className="max-w-[700px] mx-auto">
+      <Card className="max-w-[900px] mx-auto w-full">
         <div className="relative w-full bg-secondary py-3">
           <div className="relative w-max h-max mx-auto top-10">
             <Avatar className="border-[3px] border-background w-20 h-20">

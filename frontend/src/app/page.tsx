@@ -26,10 +26,10 @@ export default function Home() {
 
   return (
     <div className="max-w-[1500px] mx-auto px-5 relative">
-      <h1 className="text-5xl text-foreground/70 max-w-2xl leading-snug">
+      {/* <h1 className="text-5xl text-foreground/70 max-w-2xl leading-snug">
         <b className="font-bold text-foreground">Store.</b> The best way to buy
         the products you love.
-      </h1>
+      </h1> */}
       <div className="my-10 flex flex-wrap items-center gap-3">
         {brands.map((brand, index) => (
           <Button variant="outline" key={index} className="flex-shrink-0">

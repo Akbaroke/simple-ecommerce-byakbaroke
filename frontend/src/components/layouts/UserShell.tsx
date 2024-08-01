@@ -56,7 +56,11 @@ export default function UserShell({ children }: { children: React.ReactNode }) {
             </Button>
           </TooltipFrag>
           <TooltipFrag content="View Cart">
-            <Button size="icon" variant="ghost" className="relative">
+            <Button
+              size="icon"
+              variant="ghost"
+              className="relative"
+              onClick={() => router.push('/cart')}>
               <MdOutlineShoppingCart size={20} />
               <Badge
                 className="px-1.5 py-0 text-[12px] absolute top-0 right-0"

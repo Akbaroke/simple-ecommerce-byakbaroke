@@ -78,15 +78,8 @@ export default function ProductDetailPage({
     }
   };
 
-  const tokenValidation = () => {
-    if (!token) {
-      const encodedCallbackUrl = encodeURIComponent(pathname);
-      return router.push('/auth?callbackUrl=' + encodedCallbackUrl);
-    }
-  };
-
   return (
-    <div className="mx-auto grid max-w-[59rem] flex-1 auto-rows-max gap-4">
+    <div className="mx-auto grid max-w-[59rem] flex-1 auto-rows-max gap-4 w-full">
       <div className="flex items-center gap-4">
         <Button
           variant="outline"
@@ -100,8 +93,8 @@ export default function ProductDetailPage({
           Product Details
         </h1>
       </div>
-      <Card x-chunk="dashboard-07-chunk-0">
-        <CardContent className="p-10 grid gap-4 md:grid-cols-[1fr_500px] lg:grid-cols-4 lg:gap-8">
+      <Card x-chunk="dashboard-07-chunk-0" className="w-full">
+        <CardContent className="p-10 grid gap-4 md:grid-cols-[1fr_500px] lg:grid-cols-4 lg:gap-8 w-full">
           <div className="grid auto-rows-max items-start gap-4 lg:col-span-2 lg:gap-8">
             <Image
               className="w-full h-full rounded-xl"

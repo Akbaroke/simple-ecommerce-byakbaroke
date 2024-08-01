@@ -91,7 +91,7 @@ export default function DetailProductPage({
   };
 
   return (
-    <div className="mx-auto grid max-w-[59rem] flex-1 auto-rows-max gap-4">
+    <div className="mx-auto grid max-w-[59rem] flex-1 auto-rows-max gap-4 w-full">
       <div className="flex items-center gap-4">
         <Button
           variant="outline"
