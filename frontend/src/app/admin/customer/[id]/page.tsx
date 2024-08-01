@@ -2,7 +2,6 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { useCurrentUser } from '@/hooks/use-current-user';
 import { TbRefresh } from 'react-icons/tb';
 import getInitials from '@/lib/initials-name';
 import React, { useEffect, useState, useTransition } from 'react';
@@ -16,51 +15,61 @@ import {
   FormItem,
   FormLabel,
 } from '@/components/ui/form';
-import { ProfileSchema } from '@/schemas';
+import { AdminSchema } from '@/schemas';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { Textarea } from '@/components/ui/textarea';
-import { getProfile, updateProfile } from '@/service/auth';
 import { useCurrentToken } from '@/hooks/use-current-token';
 import generateAvatar from '@/lib/generateAvatar';
 import Notify from '@/components/molecules/Notify';
+import { getUserById, updateUser } from '@/service/user';
+import { UserModel } from '@/interfaces/user';
+import { useRouter } from 'next-nprogress-bar';
 
-export default function Profile() {
-  const user = useCurrentUser();
+export default function CustomerDetailPage({
+  params,
+}: {
+  params: { id: string };
+}) {
+  const router = useRouter();
   const token = useCurrentToken();
 
   const [isPending, startTransition] = useTransition();
+  const [user, setUser] = useState<UserModel>();
 
-  const form = useForm<z.infer<typeof ProfileSchema>>({
-    resolver: zodResolver(ProfileSchema),
+  const form = useForm<z.infer<typeof AdminSchema>>({
+    resolver: zodResolver(AdminSchema),
     defaultValues: {
       imgUrl: '',
       name: '',
       address: '',
       contact: '',
+      role: '',
     },
   });
 
   const fetchProfile = async (token: string) => {
-    const data = await getProfile(token);
+    const data = await getUserById(token, params.id);
     form.setValue('imgUrl', data?.imgUrl);
     form.setValue('name', data?.name);
     form.setValue('address', data?.address);
     form.setValue('contact', data?.contact);
+    form.setValue('role', data?.role);
+    setUser(data);
   };
 
   useEffect(() => {
     if (token?.token) {
-      fetchProfile(token?.token);
+      fetchProfile(token.token);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [token?.token]);
+  }, [token]);
 
-  const onSubmit = (values: z.infer<typeof ProfileSchema>) => {
+  const onSubmit = (values: z.infer<typeof AdminSchema>) => {
     startTransition(() => {
       if (token?.token) {
-        updateProfile(token.token, values).then((res) => {
+        updateUser(token.token, values, params.id).then((res) => {
           if (res.error) {
             Notify({
               type: 'error',
@@ -72,6 +81,7 @@ export default function Profile() {
               type: 'success',
               message: res.success,
             });
+            router.push('/admin/customer');
           }
           fetchProfile(token?.token);
         });
@@ -80,7 +90,7 @@ export default function Profile() {
   };
 
   const handleShuffleImgProfile = () => {
-    const newImgUrl = generateAvatar(form.watch('name')!);
+    const newImgUrl = generateAvatar(user?.name!);
     form.setValue('imgUrl', newImgUrl, { shouldDirty: true });
   };
 
@@ -109,7 +119,7 @@ export default function Profile() {
         <CardContent>
           <div className="mt-11 space-y-2 mx-auto w-max text-center">
             <h1 className="font-semibold text-xl">{form.watch('name')}</h1>
-            <p className="text-sm text-muted-foreground">{user?.email}</p>
+            <p className="text-sm text-muted-foreground">{user?.name}</p>
           </div>
           <Separator className="my-4" />
           <Form {...form}>

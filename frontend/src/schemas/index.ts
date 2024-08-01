@@ -87,6 +87,25 @@ export const ProfileSchema = z.object({
   }),
 });
 
+export const AdminSchema = z.object({
+  imgUrl: z.string(),
+  name: z
+    .string()
+    .min(1, {
+      message: 'Name is required',
+    })
+    .max(255, {
+      message: 'Name must be less than 255 characters',
+    }),
+  address: z.string().max(255, {
+    message: 'Address must be less than 255 characters',
+  }),
+  contact: z.string().max(15, {
+    message: 'Contact must be less than 15 characters',
+  }),
+  role: z.string(),
+});
+
 
 export const ProductSchema = z.object({
   name: z

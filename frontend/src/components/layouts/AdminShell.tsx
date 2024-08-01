@@ -18,13 +18,11 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Input } from '@/components/ui/input';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 import getInitials from '@/lib/initials-name';
 import { useCurrentUser } from '@/hooks/use-current-user';
@@ -32,6 +30,7 @@ import { signOut } from 'next-auth/react';
 import { ModeToggle } from '../molecules/ModeToggle';
 import { LinkData } from '@/interfaces/props';
 import { cn } from '@/lib/utils';
+import { useRouter } from 'next-nprogress-bar';
 
 export default function AdminShell({
   children,
@@ -48,11 +47,6 @@ export default function AdminShell({
       label: 'Dashboard',
       href: '/admin',
       icon: Home,
-    },
-    {
-      label: 'Orders',
-      href: '/admin/order',
-      icon: ShoppingCart,
     },
     {
       label: 'Products',
@@ -75,10 +69,6 @@ export default function AdminShell({
               <Package2 className="h-6 w-6" />
               <span className=""></span>
             </Link>
-            <Button variant="outline" size="icon" className="ml-auto h-8 w-8">
-              <Bell className="h-4 w-4" />
-              <span className="sr-only">Toggle notifications</span>
-            </Button>
           </div>
           <div className="flex-1">
             <nav className="grid items-start px-2 text-sm font-medium lg:px-4">

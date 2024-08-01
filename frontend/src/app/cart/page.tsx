@@ -24,6 +24,7 @@ import { usePathname } from 'next/navigation';
 import React, { useEffect } from 'react';
 import { IoTrashOutline } from 'react-icons/io5';
 import { useDispatch, useSelector } from 'react-redux';
+import LazyLoad from 'react-lazy-load';
 
 export default function CartPage() {
   const router = useRouter();
@@ -110,16 +111,19 @@ export default function CartPage() {
           )}
           {list?.map((product, index) => (
             <div
+              data-aos="fade-up"
               key={index}
               className="flex gap-8 p-5 w-full items-center hover:bg-muted rounded-lg transition-all duration-300">
-              <Image
-                src={product.image || 'https://ui.shadcn.com/placeholder.svg'}
-                alt={product.name}
-                width={100}
-                height={100}
-                onClick={() => router.push(`/product/${product.id}`)}
-                className="w-[150px] h-[150px] rounded-2xl hover:scale-105 transition-all duration-30 cursor-pointer"
-              />
+              <LazyLoad className="w-full">
+                <Image
+                  src={product.image || 'https://ui.shadcn.com/placeholder.svg'}
+                  alt={product.name}
+                  width={100}
+                  height={100}
+                  onClick={() => router.push(`/product/${product.id}`)}
+                  className="w-[150px] h-[150px] rounded-2xl hover:scale-105 transition-all duration-30 cursor-pointer"
+                />
+              </LazyLoad>
               <div className="flex-1 w-full flex flex-col gap-2 h-full">
                 <div className="flex flex-col gap-2">
                   <Badge variant="secondary" className="w-max">

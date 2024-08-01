@@ -1,13 +1,12 @@
 'use client';
 import { Button } from '@/components/ui/button';
 import { useEffect, useState, useTransition } from 'react';
-import { ListFilter, MoreHorizontal, PlusCircle, Search } from 'lucide-react';
+import { ListFilter, PlusCircle, Search } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
-  DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
@@ -41,6 +40,7 @@ import { IoTrashOutline } from 'react-icons/io5';
 import { FaPen } from 'react-icons/fa6';
 import { useCurrentToken } from '@/hooks/use-current-token';
 import Notify from '@/components/molecules/Notify';
+import LazyLoad from 'react-lazy-load';
 
 export default function ProductPage() {
   const token = useCurrentToken();
@@ -235,13 +235,15 @@ export default function ProductPage() {
               {paginatedProducts.map((product, index) => (
                 <TableRow key={index}>
                   <TableCell className="hidden sm:table-cell">
-                    <Image
-                      alt="product image"
-                      className="aspect-square rounded-md object-cover"
-                      height="64"
-                      src={product.image}
-                      width="64"
-                    />
+                    <LazyLoad className="w-full">
+                      <Image
+                        alt="product image"
+                        className="aspect-square rounded-md object-cover"
+                        height="64"
+                        src={product.image}
+                        width="64"
+                      />
+                    </LazyLoad>
                   </TableCell>
                   <TableCell className="font-medium">{product.name}</TableCell>
                   <TableCell>

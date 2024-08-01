@@ -24,6 +24,7 @@ import React, { useEffect, useState, useTransition } from 'react';
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
 import { LiaCartPlusSolid } from 'react-icons/lia';
 import { useDispatch, useSelector } from 'react-redux';
+import LazyLoad from 'react-lazy-load';
 
 export default function ProductDetailPage({
   params,
@@ -108,13 +109,15 @@ export default function ProductDetailPage({
       <Card x-chunk="dashboard-07-chunk-0" className="w-full">
         <CardContent className="p-10 grid gap-4 md:grid-cols-[1fr_500px] lg:grid-cols-4 lg:gap-8 w-full">
           <div className="grid auto-rows-max items-start gap-4 lg:col-span-2 lg:gap-8">
-            <Image
-              className="w-full h-full rounded-xl"
-              src={product?.image || 'https://ui.shadcn.com/placeholder.svg'}
-              alt="Product picture"
-              width={500}
-              height={500}
-            />
+            <LazyLoad className="w-full">
+              <Image
+                className="w-full h-full rounded-xl"
+                src={product?.image || 'https://ui.shadcn.com/placeholder.svg'}
+                alt="Product picture"
+                width={500}
+                height={500}
+              />
+            </LazyLoad>
           </div>
           <div className="grid auto-rows-max items-start gap-4 lg:col-span-2 lg:gap-8">
             <div className="flex flex-col gap-3">

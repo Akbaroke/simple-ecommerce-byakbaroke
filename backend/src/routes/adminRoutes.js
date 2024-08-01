@@ -1,5 +1,10 @@
 import express from 'express';
-import { getUsers, getOrders } from '../controllers/adminController.js';
+import {
+  deleteUserById,
+  getUserById,
+  getUsers,
+  updateUserById,
+} from '../controllers/adminController.js';
 import authenticateToken from '../middleware/authMiddleware.js';
 import authorizeRole from '../middleware/roleMiddleware.js';
 import { UserRole } from '@prisma/client';
@@ -13,10 +18,23 @@ router.get(
   getUsers
 );
 router.get(
-  '/orders',
+  '/users/:id',
   authenticateToken,
   authorizeRole(UserRole.ADMIN),
-  getOrders
+  getUserById
+);
+router.put(
+  '/users/:id',
+  authenticateToken,
+  authorizeRole(UserRole.ADMIN),
+  updateUserById
+);
+
+router.delete(
+  '/users/:id',
+  authenticateToken,
+  authorizeRole(UserRole.ADMIN),
+  deleteUserById
 );
 
 export default router;

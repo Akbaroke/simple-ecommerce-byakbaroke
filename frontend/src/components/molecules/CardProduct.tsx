@@ -17,6 +17,7 @@ import { usePathname } from 'next/navigation';
 import { StoreModel } from '@/interfaces/redux-model';
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
 import { toggleFavorite } from '@/redux/slices/favoriteSlice';
+import LazyLoad from 'react-lazy-load';
 
 type Props = {
   data: ProductModel;
@@ -30,7 +31,7 @@ export default function CardProduct({ data, href }: Props) {
   const token = useCurrentToken();
   const { list } = useSelector((state: StoreModel) => state.favorite);
 
-  const { name, price, brand, image,stock } = data;
+  const { name, price, brand, image, stock } = data;
 
   const validateImageUrl = (url: string) => {
     return /^https?:\/\/.+\.(jpg|jpeg|png|gif|webp|svg)$/.test(url);
@@ -60,21 +61,24 @@ export default function CardProduct({ data, href }: Props) {
 
   const Component = () => (
     <Card
-      className={cn('max-w-[350px] h-full', {
+      data-aos="fade-up"
+      className={cn('max-w-[350px] rounded-xl h-full', {
         'cursor-pointer hover:shadow-xl transition-all duration-300 ': href,
       })}>
       <CardHeader className="relative">
-        <Image
-          alt="Product image"
-          className="aspect-square w-full h-[280px] rounded-md object-cover"
-          src={imageValidation}
-          width={400}
-          height={400}
-        />
+        <LazyLoad className="w-full">
+          <Image
+            alt="Product image"
+            className="aspect-square w-full h-[280px] rounded-md object-cover"
+            src={imageValidation}
+            width={400}
+            height={400}
+          />
+        </LazyLoad>
         {validateImageUrl(image) && (
           <Button
             size="icon"
-            variant="ghost"
+            variant="outline"
             className="rounded-full absolute top-2 right-4"
             onClick={handleClickFavorite}>
             {list.some((item) => item.id === data.id) ? (
