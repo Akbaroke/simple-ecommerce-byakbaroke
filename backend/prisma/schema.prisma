@@ -21,30 +21,39 @@ enum OrderStatus {
 }
 
 model User {
-  id        String     @id @default(cuid())
-  name      String
-  email     String     @unique
-  password  String
-  imgUrl    String?
-  address   String?
-  contact   String?
-  role      UserRole   @default(USER)
+  id       String   @id @default(cuid())
+  name     String
+  email    String   @unique
+  password String
+  imgUrl   String?
+  address  String?
+  contact  String?
+  role     UserRole @default(USER)
+
   products  Product[]
   cart      Cart?
   favorites Favorite[]
   orders    Order[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Product {
-  id     String @id @default(cuid())
-  name   String
-  price  Float
-  brand  String
-  image  String
-  userId String
-  user   User   @relation(fields: [userId], references: [id])
+  id          String @id @default(cuid())
+  name        String
+  price       Float  @default(0)
+  stock       Int    @default(0)
+  description String @default("")
+  brand       String
+  image       String
+  userId      String
+  user        User   @relation(fields: [userId], references: [id])
 
   Favorite Favorite[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Cart {
@@ -52,6 +61,9 @@ model Cart {
   userId String @unique
   user   User   @relation(fields: [userId], references: [id])
   items  Json
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Favorite {
@@ -60,6 +72,9 @@ model Favorite {
   user      User    @relation(fields: [userId], references: [id])
   product   Product @relation(fields: [productId], references: [id])
   productId String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Order {
@@ -69,4 +84,7 @@ model Order {
   items  Json
   total  Float
   status OrderStatus @default(PENDING)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

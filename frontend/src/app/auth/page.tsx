@@ -56,7 +56,7 @@ export default function LoginPage() {
       signIn('credentials', {
         email: values.email,
         password: values.password,
-        redirect: false,
+        redirect: true,
         callbackUrl: callbackUrl || '/',
       }).then((res) => {
         if (res?.error) {

@@ -14,10 +14,17 @@ import { ModeToggle } from '../molecules/ModeToggle';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 import getInitials from '@/lib/initials-name';
 import { useCurrentUser } from '@/hooks/use-current-user';
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'next-nprogress-bar';
 import { signOut } from 'next-auth/react';
+import { MdOutlineShoppingCart } from 'react-icons/md';
+import { FaRegHeart } from 'react-icons/fa';
+import TooltipFrag from '../molecules/TooltipFrag';
+import { Badge } from '../ui/badge';
+import { useSelector } from 'react-redux';
+import { StoreModel } from '@/interfaces/redux-model';
 
 export default function UserShell({ children }: { children: React.ReactNode }) {
+  const { total_item } = useSelector((state: StoreModel) => state.cart);
   const user = useCurrentUser();
   const router = useRouter();
 
@@ -43,6 +50,21 @@ export default function UserShell({ children }: { children: React.ReactNode }) {
               />
             </div>
           </form>
+          <TooltipFrag content="View Favorites">
+            <Button size="icon" variant="ghost">
+              <FaRegHeart size={20} />
+            </Button>
+          </TooltipFrag>
+          <TooltipFrag content="View Cart">
+            <Button size="icon" variant="ghost" className="relative">
+              <MdOutlineShoppingCart size={20} />
+              <Badge
+                className="px-1.5 py-0 text-[12px] absolute top-0 right-0"
+                variant="destructive">
+                {total_item}
+              </Badge>
+            </Button>
+          </TooltipFrag>
           <ModeToggle />
           {user ? (
             <DropdownMenu>

@@ -100,6 +100,17 @@ export const ProductSchema = z.object({
   price: z.number().min(1, {
     message: 'Price is required',
   }),
+  stock: z.number().min(1, {
+    message: 'Stock is required',
+  }),
+  description: z
+    .string()
+    .min(1, {
+      message: 'Description is required',
+    })
+    .max(1000, {
+      message: 'Description must be less than 1000 characters',
+    }),
   brand: z
     .string()
     .min(1, {

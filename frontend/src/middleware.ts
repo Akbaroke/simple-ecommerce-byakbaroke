@@ -1,11 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getToken } from 'next-auth/jwt';
-import {
-  apiAuthPrefix,
-  authRoutes,
-  DEFAULT_LOGIN_REDIRECT,
-  publicRoutes,
-} from './routes';
+import { apiAuthPrefix, authRoutes, DEFAULT_LOGIN_REDIRECT } from './routes';
 
 export default async function middleware(req: NextRequest) {
   const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
@@ -16,7 +11,6 @@ export default async function middleware(req: NextRequest) {
 
   const { nextUrl } = req;
   const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
-  const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
   const isAuthRoute = authRoutes.includes(nextUrl.pathname);
   const isAdminRoute = nextUrl.pathname.startsWith('/admin');
 
@@ -46,7 +40,7 @@ export default async function middleware(req: NextRequest) {
   }
 
   // Handle protected routes for non-authenticated users
-  if (!isLoggedIn && !isPublicRoute) {
+  if (!isLoggedIn && isAuthRoute) {
     let callbackUrl = nextUrl.pathname;
     if (nextUrl.search) {
       callbackUrl += nextUrl.search;

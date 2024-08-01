@@ -5,6 +5,7 @@ import {
   getProductById,
   updateProduct,
   deleteProduct,
+  getAllBrands,
 } from '../controllers/productController.js';
 import authenticateToken from '../middleware/authMiddleware.js';
 import authorizeRole from '../middleware/roleMiddleware.js';
@@ -19,6 +20,7 @@ router.post(
   createProduct
 );
 router.get('/', getProducts);
+router.get('/brands', getAllBrands);
 router.get('/:id', getProductById);
 router.put(
   '/:id',

@@ -1,7 +1,7 @@
 import { toast } from 'sonner';
 
 type Props = {
-  type: 'success' | 'warning' | 'error' | 'info' | 'default';
+  type: 'success' | 'warning' | 'error' | 'info' | 'default' | 'loading';
   title?: string;
   message: string;
   duration?: number;
@@ -18,6 +18,13 @@ export default function Notify({
   id,
 }: Props) {
   switch (type) {
+    case 'loading':
+      return toast.loading(title, {
+        id,
+        description: message,
+        descriptionClassName: messageClassName,
+        duration,
+      });
     case 'success':
       return toast.success(title, {
         id,

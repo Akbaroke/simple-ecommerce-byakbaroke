@@ -5,6 +5,7 @@ import LoadingRouteProvider from '@/components/molecules/LoadingBarProgress';
 import Providers from '@/components/session-provider';
 import AppShell from '@/components/layouts/AppShell';
 import { Toaster } from 'sonner';
+import { ReduxProvider } from '@/components/layouts/ReduxProvider';
 
 export const metadata: Metadata = {
   title: 'Indo Phone',
@@ -17,27 +18,29 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className="min-h-screen bg-background font-sans antialiased">
-        <Providers>
-          <LoadingRouteProvider>
+    <ReduxProvider>
+      <html lang="en">
+        <body className="min-h-screen bg-background font-sans antialiased">
+          <Providers>
             <ThemeProvider
               attribute="class"
               defaultTheme="system"
               enableSystem
               disableTransitionOnChange>
-              <Toaster
-                richColors
-                position="top-center"
-                expand={true}
-                closeButton
-                duration={2000}
-              />
-              <AppShell>{children}</AppShell>
+              <LoadingRouteProvider>
+                <Toaster
+                  richColors
+                  position="top-center"
+                  expand={true}
+                  closeButton
+                  duration={2000}
+                />
+                <AppShell>{children}</AppShell>
+              </LoadingRouteProvider>
             </ThemeProvider>
-          </LoadingRouteProvider>
-        </Providers>
-      </body>
-    </html>
+          </Providers>
+        </body>
+      </html>
+    </ReduxProvider>
   );
 }

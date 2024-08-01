@@ -1,20 +1,22 @@
 import prisma from '../../prisma/client.js';
 
 export const createProduct = async (req, res) => {
-  const { name, price, brand, image } = req.body;
+  const { name, price, brand, image, stock, description } = req.body;
 
   try {
-    const product = await prisma.product.create({
+    await prisma.product.create({
       data: {
         name,
         price,
         brand,
         image,
+        stock, 
+        description,
         userId: req.user.userId,
       },
     });
 
-    res.json(product);
+    res.json({ message: 'Product created successfully.' });
   } catch (err) {
     res.status(400).json({ error: 'Failed to create product' });
   }
@@ -34,7 +36,7 @@ export const getProductById = async (req, res) => {
 
   try {
     const product = await prisma.product.findUnique({
-      where: { id: parseInt(id) },
+      where: { id: id },
     });
 
     res.json(product);
@@ -45,15 +47,15 @@ export const getProductById = async (req, res) => {
 
 export const updateProduct = async (req, res) => {
   const { id } = req.params;
-  const { name, price, brand, image } = req.body;
+  const { name, price, brand, image, stock, description } = req.body;
 
   try {
-    const product = await prisma.product.update({
-      where: { id: parseInt(id) },
-      data: { name, price, brand, image },
+    await prisma.product.update({
+      where: { id: id },
+      data: { name, price, brand, image, stock, description },
     });
 
-    res.json(product);
+    res.json({ message: 'Product updated successfully' });
   } catch (err) {
     res.status(400).json({ error: 'Failed to update product' });
   }
@@ -64,11 +66,27 @@ export const deleteProduct = async (req, res) => {
 
   try {
     await prisma.product.delete({
-      where: { id: parseInt(id) },
+      where: { id: id },
     });
 
-    res.json({ message: 'Product deleted' });
+    res.json({ message: 'Product deleted successfully' });
   } catch (err) {
     res.status(400).json({ error: 'Failed to delete product' });
+  }
+};
+
+export const getAllBrands = async (req, res) => {
+  try {
+    const brands = await prisma.product.groupBy({
+      by: ['brand'],
+      _count: { _all: true },
+    });
+    res.json(
+      brands.map((brand) => {
+        return { name: brand.brand, count: brand._count._all };
+      })
+    );
+  } catch (err) {
+    res.status(400).json({ error: 'Failed to fetch brands' });
   }
 };

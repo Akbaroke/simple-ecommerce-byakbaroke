@@ -20,15 +20,19 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { useCurrentToken } from '@/hooks/use-current-token';
 import { ProductSchema } from '@/schemas';
-import { addProduct } from '@/service/product';
+import { getProductById, updateProduct } from '@/service/product';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ChevronLeft } from 'lucide-react';
 import { useRouter } from 'next-nprogress-bar';
-import React, { useTransition } from 'react';
+import React, { useEffect, useTransition } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
-export default function AddProductPage() {
+export default function DetailProductPage({
+  params,
+}: {
+  params: { id: string };
+}) {
   const router = useRouter();
   const token = useCurrentToken();
 
@@ -42,14 +46,32 @@ export default function AddProductPage() {
       price: 0,
       stock: 0,
       brand: '',
-      description: ''
+      description: '',
     },
   });
+
+  const fetchProduct = async (id: string) => {
+    const response = await getProductById(id);
+    form.reset(response);
+    form.setValue('price', response.price);
+    if (response === null) {
+      router.replace('/admin/product');
+    }
+  };
+
+  useEffect(() => {
+    if (params.id) {
+      startTransition(() => {
+        fetchProduct(params.id);
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [params.id]);
 
   const onSubmit = (values: z.infer<typeof ProductSchema>) => {
     startTransition(() => {
       if (token?.token) {
-        addProduct(token.token, values).then((res) => {
+        updateProduct(token.token, values, params.id).then((res) => {
           if (res.error) {
             Notify({
               type: 'error',
@@ -61,7 +83,6 @@ export default function AddProductPage() {
               type: 'success',
               message: res.success,
             });
-            form.reset();
             router.push('/admin/product');
           }
         });
@@ -81,7 +102,7 @@ export default function AddProductPage() {
           <span className="sr-only">Back</span>
         </Button>
         <h1 className="flex-1 shrink-0 whitespace-nowrap text-xl font-semibold tracking-tight sm:grow-0">
-          Add Product
+          Edit Product
         </h1>
       </div>
       <div className="grid gap-4 md:grid-cols-[1fr_300px] lg:grid-cols-4 lg:gap-8">
@@ -205,7 +226,11 @@ export default function AddProductPage() {
                       )}
                     />
                   </div>
-                  <Button size="sm" type="submit" className="w-full">
+                  <Button
+                    size="sm"
+                    type="submit"
+                    className="w-full"
+                    disabled={isPending}>
                     Save Product
                   </Button>
                 </form>
@@ -219,9 +244,7 @@ export default function AddProductPage() {
               <CardTitle>Preview</CardTitle>
             </CardHeader>
             <CardContent>
-              <CardProduct
-                data={form.watch()} 
-              />
+              <CardProduct data={form.watch()} />
             </CardContent>
           </Card>
         </div>
