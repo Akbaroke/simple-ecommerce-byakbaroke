@@ -14,13 +14,14 @@ import {
   decrementQuantityCart,
   incrementQuantityCart,
 } from '@/redux/slices/cartSlice';
+import { toggleFavorite } from '@/redux/slices/favoriteSlice';
 import { getProductById } from '@/service/product';
 import { ChevronLeft } from 'lucide-react';
 import { useRouter } from 'next-nprogress-bar';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import React, { useEffect, useState, useTransition } from 'react';
-import { CiHeart } from 'react-icons/ci';
+import { FaHeart, FaRegHeart } from 'react-icons/fa';
 import { LiaCartPlusSolid } from 'react-icons/lia';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -34,10 +35,11 @@ export default function ProductDetailPage({
   const dispatch = useDispatch();
   const token = useCurrentToken();
   const encodedCallbackUrl = encodeURIComponent(pathname);
+  const favorite = useSelector((state: StoreModel) => state.favorite);
 
   const [product, setProduct] = useState<ProductModel>();
   const [isPending, startTransition] = useTransition();
-  const { list } = useSelector((state: StoreModel) => state.cart);
+  const cart = useSelector((state: StoreModel) => state.cart);
 
   const fetchProduct = async (id: string) => {
     const response = await getProductById(id);
@@ -67,7 +69,7 @@ export default function ProductDetailPage({
     if (!token) return router.push('/auth?callbackUrl=' + encodedCallbackUrl);
     if (product) {
       if (
-        list.find((item) => item.id === product?.id)?.quantity &&
+        cart.list.find((item) => item.id === product?.id)?.quantity &&
         product?.id
       ) {
         return dispatch(
@@ -78,6 +80,16 @@ export default function ProductDetailPage({
     }
   };
 
+  const handleClickFavorite = (event: React.MouseEvent) => {
+    if (!token) {
+      const encodedCallbackUrl = encodeURIComponent(pathname);
+      return router.push('/auth?callbackUrl=' + encodedCallbackUrl);
+    }
+    if (product) {
+      dispatch(toggleFavorite({ product, token: token.token }));
+    }
+  };
+
   return (
     <div className="mx-auto grid max-w-[59rem] flex-1 auto-rows-max gap-4 w-full">
       <div className="flex items-center gap-4">
@@ -85,7 +97,7 @@ export default function ProductDetailPage({
           variant="outline"
           size="icon"
           className="h-7 w-7"
-          onClick={() => router.back()}>
+          onClick={() => router.replace('/')}>
           <ChevronLeft className="h-4 w-4" />
           <span className="sr-only">Back</span>
         </Button>
@@ -135,7 +147,7 @@ export default function ProductDetailPage({
                 </p>
               )}
               <div className="flex items-center justify-between gap-3">
-                {list.find((item) => item.id === product?.id)?.quantity ? (
+                {cart.list.find((item) => item.id === product?.id)?.quantity ? (
                   <Counting
                     minCount={0}
                     maxCount={product?.stock}
@@ -143,7 +155,8 @@ export default function ProductDetailPage({
                     onIncrement={handleIncrementQuantity}
                     disabled={product?.stock === 0}
                     initialCount={
-                      list.find((item) => item.id === product?.id)?.quantity
+                      cart.list.find((item) => item.id === product?.id)
+                        ?.quantity
                     }
                   />
                 ) : (
@@ -151,13 +164,20 @@ export default function ProductDetailPage({
                     className="w-full"
                     onClick={handleIncrementQuantity}
                     disabled={product?.stock === 0}>
-                    <LiaCartPlusSolid size={18} className="mr-2" />
+                    <LiaCartPlusSolid size={20} className="mr-2" />
                     Add to cart
                   </Button>
                 )}
                 <TooltipFrag content="Add to favorite">
-                  <Button size="icon" variant="secondary">
-                    <CiHeart size={25} />
+                  <Button
+                    size="icon"
+                    variant="secondary"
+                    onClick={handleClickFavorite}>
+                    {favorite.list.some((item) => item.id === params.id) ? (
+                      <FaHeart size={20} className="text-red-500" />
+                    ) : (
+                      <FaRegHeart size={20} />
+                    )}
                   </Button>
                 </TooltipFrag>
               </div>

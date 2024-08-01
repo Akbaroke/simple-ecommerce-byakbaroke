@@ -2,6 +2,7 @@ import { ProductModel } from './product';
 
 export interface StoreModel {
   cart: CartSliceState;
+  favorite: FavoriteSliceState;
 }
 
 export interface CartSliceState {
@@ -13,4 +14,9 @@ export interface CartSliceState {
 export interface ProductSliceModel extends ProductModel {
   quantity: number;
   total_price: number;
+}
+
+export interface FavoriteSliceState {
+  list: ProductModel[];
+  total_item: number;
 }

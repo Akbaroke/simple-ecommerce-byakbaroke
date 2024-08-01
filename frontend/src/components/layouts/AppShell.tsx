@@ -9,6 +9,8 @@ import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { restoreCart } from '@/redux/slices/cartSlice';
 import { getCart } from '@/service/cart';
+import { getFavorite } from '@/service/favorite';
+import { restoreFavorite } from '@/redux/slices/favoriteSlice';
 
 export default function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -23,6 +25,11 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
       getCart(token.token).then((response) => {
         if (response) {
           dispatch(restoreCart(response));
+        }
+      });
+      getFavorite(token.token).then((response) => {
+        if (response) {
+          dispatch(restoreFavorite(response));
         }
       });
     }

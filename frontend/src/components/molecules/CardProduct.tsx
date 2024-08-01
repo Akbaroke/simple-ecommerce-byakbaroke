@@ -7,14 +7,16 @@ import { Badge } from '../ui/badge';
 import TooltipFrag from './TooltipFrag';
 import { Button } from '../ui/button';
 import { LiaCartPlusSolid } from 'react-icons/lia';
-import { CiHeart } from 'react-icons/ci';
 import { useRouter } from 'next-nprogress-bar';
 import { cn } from '@/lib/utils';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { ProductModel } from '@/interfaces/product';
 import { addCart } from '@/redux/slices/cartSlice';
 import { useCurrentToken } from '@/hooks/use-current-token';
 import { usePathname } from 'next/navigation';
+import { StoreModel } from '@/interfaces/redux-model';
+import { FaHeart, FaRegHeart } from 'react-icons/fa';
+import { toggleFavorite } from '@/redux/slices/favoriteSlice';
 
 type Props = {
   data: ProductModel;
@@ -26,8 +28,9 @@ export default function CardProduct({ data, href }: Props) {
   const pathname = usePathname();
   const router = useRouter();
   const token = useCurrentToken();
+  const { list } = useSelector((state: StoreModel) => state.favorite);
 
-  const { name, price, brand, image } = data;
+  const { name, price, brand, image,stock } = data;
 
   const validateImageUrl = (url: string) => {
     return /^https?:\/\/.+\.(jpg|jpeg|png|gif|webp|svg)$/.test(url);
@@ -39,6 +42,11 @@ export default function CardProduct({ data, href }: Props) {
 
   const handleClickFavorite = (event: React.MouseEvent) => {
     event.stopPropagation();
+    if (!token) {
+      const encodedCallbackUrl = encodeURIComponent(pathname);
+      return router.push('/auth?callbackUrl=' + encodedCallbackUrl);
+    }
+    dispatch(toggleFavorite({ product: data, token: token.token }));
   };
 
   const handleClickCart = (event: React.MouseEvent) => {
@@ -69,7 +77,11 @@ export default function CardProduct({ data, href }: Props) {
             variant="ghost"
             className="rounded-full absolute top-2 right-4"
             onClick={handleClickFavorite}>
-            <CiHeart size={25} />
+            {list.some((item) => item.id === data.id) ? (
+              <FaHeart size={20} className="text-red-500" />
+            ) : (
+              <FaRegHeart size={20} />
+            )}
           </Button>
         )}
       </CardHeader>
@@ -89,6 +101,7 @@ export default function CardProduct({ data, href }: Props) {
           <Button
             size="icon"
             variant="default"
+            disabled={stock <= 0}
             className="rounded-full shadow-xl transition-all duration-300"
             onClick={handleClickCart}>
             <LiaCartPlusSolid size={25} />

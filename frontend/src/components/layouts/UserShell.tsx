@@ -24,7 +24,8 @@ import { useSelector } from 'react-redux';
 import { StoreModel } from '@/interfaces/redux-model';
 
 export default function UserShell({ children }: { children: React.ReactNode }) {
-  const { total_item } = useSelector((state: StoreModel) => state.cart);
+  const cart = useSelector((state: StoreModel) => state.cart);
+  const favorite = useSelector((state: StoreModel) => state.favorite);
   const user = useCurrentUser();
   const router = useRouter();
 
@@ -51,8 +52,19 @@ export default function UserShell({ children }: { children: React.ReactNode }) {
             </div>
           </form>
           <TooltipFrag content="View Favorites">
-            <Button size="icon" variant="ghost">
+            <Button
+              size="icon"
+              variant="ghost"
+              className="relative"
+              onClick={() => router.push('/favorite')}>
               <FaRegHeart size={20} />
+              {favorite.total_item > 0 && (
+                <Badge
+                  className="px-1.5 py-0 text-[12px] absolute top-0 right-0"
+                  variant="destructive">
+                  {favorite.total_item === 100 ? '99+' : favorite.total_item}
+                </Badge>
+              )}
             </Button>
           </TooltipFrag>
           <TooltipFrag content="View Cart">
@@ -62,11 +74,13 @@ export default function UserShell({ children }: { children: React.ReactNode }) {
               className="relative"
               onClick={() => router.push('/cart')}>
               <MdOutlineShoppingCart size={20} />
-              <Badge
-                className="px-1.5 py-0 text-[12px] absolute top-0 right-0"
-                variant="destructive">
-                {total_item}
-              </Badge>
+              {cart.total_item > 0 && (
+                <Badge
+                  className="px-1.5 py-0 text-[12px] absolute top-0 right-0"
+                  variant="destructive">
+                  {cart.total_item === 100 ? '99+' : cart.total_item}
+                </Badge>
+              )}
             </Button>
           </TooltipFrag>
           <ModeToggle />
