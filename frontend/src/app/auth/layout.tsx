@@ -9,7 +9,7 @@ export default function RootLayout({
     <div className="min-h-svh grid place-items-center">
       <div className="flex items-center gap-8 flex-col px-5">
         <Link href="/" className="text-xl font-semibold">
-          Indo Phone
+          Simple Ecommerce
         </Link>
         {children}
       </div>
