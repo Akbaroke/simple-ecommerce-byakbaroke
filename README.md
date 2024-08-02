@@ -38,39 +38,44 @@ git clone https://github.com/Akbaroke/simple-ecommerce-byakbaroke
 
 ### Step 2
 ```
-cd ./backend
+cd ./simple-ecommerce-byakbaroke
 ```
 
 ### Step 3
 ```
-npm install
+cd ./backend
 ```
 
 ### Step 4
+```
+npm install
+```
+
+### Step 5
 - create an `.env` file by copying from the `.env.example` file
 - edit the database connection in the `DATABASE_URL` variable
 
-### Step 5
+### Step 6
 ```
 npm start
 ```
 
-### Step 6
+### Step 7
 Open New Terminal
 ```
 cd ./frontend
 ```
 
-### Step 7
+### Step 8
 ```
 npm install
 ```
 
-### Step 8
+### Step 9
 - create an `.env` file by copying from the `.env.example` file
 - copy the `TOKEN_SECRET` variable from the backend `.env` file
 
-### Step 9
+### Step 10
 ```
 npm start
 ```
