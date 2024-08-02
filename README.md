@@ -57,7 +57,7 @@ npm install
 
 ### Step 6
 ```
-npm start
+npm run start
 ```
 
 ### Step 7
@@ -77,7 +77,7 @@ npm install
 
 ### Step 10
 ```
-npm start
+npm run dev
 ```
 
 ### Last Step
