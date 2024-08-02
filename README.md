@@ -29,7 +29,7 @@
 - zod
 
 
-## How To Install
+## How To Clone
 
 ### Step 1
 ```
@@ -56,33 +56,37 @@ npm start
 ```
 
 ### Step 6
-```
-cd ..
-```
-
-### Step 7
+Open New Terminal
 ```
 cd ./frontend
 ```
 
-### Step 8
+### Step 7
 ```
 npm install
 ```
 
-### Step 9
+### Step 8
 - create an `.env` file by copying from the `.env.example` file
 - copy the `TOKEN_SECRET` variable from the backend `.env` file
 
-### Step 10
+### Step 9
 ```
 npm start
+```
+
+### Last Step
+- Open in browser http://localhost:3000
+- Admin account :
+```
+Email : admin@gmail.com
+Password : akbar123
 ```
 
 <br/>
 
 
 ## Links
-
 - Web : 
 - Repo : [github.com/Akbaroke/simple-ecommerce-byakbaroke](https://github.com/Akbaroke/simple-ecommerce-byakbaroke)
+- Demo :
