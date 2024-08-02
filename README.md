@@ -93,5 +93,5 @@ Password : akbar123
 
 ## Links
 - Web : 
-- Repo : [github.com/Akbaroke/simple-ecommerce-byakbaroke](https://github.com/Akbaroke/simple-ecommerce-byakbaroke)
-- Demo :
+- Repo : https://github.com/Akbaroke/simple-ecommerce-byakbaroke
+- Demo : https://www.youtube.com/watch?v=CUw-oaHMkEY
