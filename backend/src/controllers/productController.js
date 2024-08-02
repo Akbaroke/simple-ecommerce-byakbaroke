@@ -10,9 +10,8 @@ export const createProduct = async (req, res) => {
         price,
         brand,
         image,
-        stock, 
+        stock,
         description,
-        userId: req.user.userId,
       },
     });
 

@@ -121,11 +121,6 @@ export default function LoginPage() {
                   </FormItem>
                 )}
               />
-              <Link
-                href="/auth/reset"
-                className="inline-block text-sm underline w-max">
-                Forgot your password?
-              </Link>
             </div>
             <FormError message={error || urlError} />
             <FormSuccess message={success} />

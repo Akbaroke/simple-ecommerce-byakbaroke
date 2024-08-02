@@ -7,15 +7,18 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { useSelector } from 'react-redux';
 import { StoreModel } from '@/interfaces/redux-model';
+import Spinner from '@/components/ui/spinner';
 
 export default function Home() {
   const [products, setProducts] = useState<ProductModel[]>([]);
   const [brands, setBrands] = useState<BrandCountModel[]>([]);
   const [brandSelected, setBrandSelected] = useState<string>('');
   const search = useSelector((state: StoreModel) => state.search);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
+      setIsLoading(true);
       try {
         const [productData, brandData] = await Promise.all([
           getProducts(),
@@ -26,6 +29,8 @@ export default function Home() {
         setBrands(brandData ?? []);
       } catch (error) {
         console.error('Failed to fetch data', error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -77,6 +82,11 @@ export default function Home() {
         <p className="italic text-muted-foreground text-lg mb-5">
           Filter product from brand: {`"${brandSelected}"`}
         </p>
+      )}
+      {isLoading && (
+        <div className="flex items-center justify-center py-40">
+          <Spinner />
+        </div>
       )}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10 w-full place-items-center">
         {(search.value ? searchResults : filteredProducts).map((product) => (

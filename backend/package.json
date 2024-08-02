@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon --exec babel-node src/server.js"
+    "dev": "nodemon --exec babel-node src/server.js",
+    "start": "node src/server.js"
   },
   "keywords": [],
   "author": "",
@@ -20,7 +21,8 @@
     "express": "^4.19.2",
     "jsonwebtoken": "^9.0.2",
     "morgan": "^1.10.0",
-    "prisma": "^5.17.0"
+    "prisma": "^5.17.0",
+    "uuid": "^10.0.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.24.8",

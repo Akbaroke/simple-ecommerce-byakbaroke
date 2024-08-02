@@ -30,7 +30,6 @@ model User {
   contact  String?
   role     UserRole @default(USER)
 
-  products  Product[]
   cart      Cart?
   favorites Favorite[]
   orders    Order[]
@@ -47,8 +46,6 @@ model Product {
   description String @default("")
   brand       String
   image       String
-  userId      String
-  user        User   @relation(fields: [userId], references: [id])
 
   Favorite Favorite[]
 

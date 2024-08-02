@@ -8,8 +8,8 @@ import { Toaster } from 'sonner';
 import { ReduxProvider } from '@/components/layouts/ReduxProvider';
 
 export const metadata: Metadata = {
-  title: 'Indo Phone',
-  description: 'Indo Phone - The best phone store in Indonesia',
+  title: 'Simple Ecommerce',
+  description: 'The best ecommerce store in Indonesia',
 };
 
 export default function RootLayout({
