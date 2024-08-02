@@ -25,8 +25,10 @@ import { FormError } from '@/components/ui/form-error';
 import { FormSuccess } from '@/components/ui/form-success';
 import { useState, useTransition } from 'react';
 import { register } from '@/service/auth';
+import { useRouter } from 'next-nprogress-bar';
 
 export default function RegisterPage() {
+  const router = useRouter();
   const [error, setError] = useState<string | undefined>('');
   const [success, setSuccess] = useState<string | undefined>('');
   const [isPending, startTransition] = useTransition();
@@ -50,6 +52,7 @@ export default function RegisterPage() {
         setSuccess(res.success);
         if (res.success) {
           form.reset();
+          router.push('/auth');
         }
       });
     });

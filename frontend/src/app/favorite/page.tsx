@@ -23,9 +23,8 @@ export default function FavoritePage() {
   const dispatch = useDispatch();
   const token = useCurrentToken();
   const encodedCallbackUrl = encodeURIComponent(pathname);
-  const { list, total_item } = useSelector(
-    (state: StoreModel) => state.favorite
-  );
+  const { list } = useSelector((state: StoreModel) => state.favorite);
+  const search = useSelector((state: StoreModel) => state.search);
 
   useEffect(() => {
     if (token) {
@@ -43,6 +42,10 @@ export default function FavoritePage() {
     dispatch(toggleFavorite({ product: data, token: token.token }));
   };
 
+  const searchResults = list.filter((product) =>
+    product.name.toLowerCase().includes(search.value.toLowerCase())
+  );
+
   return (
     <div className="mx-auto grid max-w-[59rem] flex-1 auto-rows-max gap-4 w-full">
       <div className="flex items-center gap-4">
@@ -58,6 +61,11 @@ export default function FavoritePage() {
           Favorite
         </h1>
       </div>
+      {search.value && (
+        <p className="italic text-muted-foreground text-lg mb-1 ml-3">
+          Product search results for: {`"${search.value}"`}
+        </p>
+      )}
       <Card x-chunk="dashboard-07-chunk-0" className="w-full">
         <CardContent className="flex flex-col gap-5 w-full p-3">
           {list?.length === 0 && (
@@ -65,12 +73,17 @@ export default function FavoritePage() {
               Favorite is empty 🙏
             </p>
           )}
-          {list?.map((product, index) => (
+          {searchResults?.length === 0 && (
+            <p className="text-center text-lg italic text-muted-foreground">
+              Product not found 🙏
+            </p>
+          )}
+          {searchResults?.map((product, index) => (
             <div
               data-aos="fade-up"
               key={index}
               className="flex gap-8 p-5 w-full items-center hover:bg-muted rounded-lg transition-all duration-300">
-              <LazyLoad className="w-full">
+              <LazyLoad>
                 <Image
                   src={product.image || 'https://ui.shadcn.com/placeholder.svg'}
                   alt={product.name}

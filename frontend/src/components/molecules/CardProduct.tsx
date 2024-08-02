@@ -59,18 +59,19 @@ export default function CardProduct({ data, href }: Props) {
     dispatch(addCart({ product: data, token: token.token }));
   };
 
-  const Component = () => (
+  return (
     <Card
       data-aos="fade-up"
-      className={cn('max-w-[350px] rounded-xl h-full', {
+      onClick={() => (href ? router.push(href) : null)}
+      className={cn('sm:max-w-[350px] rounded-xl h-full w-full', {
         'cursor-pointer hover:shadow-xl transition-all duration-300 ': href,
       })}>
       <CardHeader className="relative">
-        <LazyLoad className="w-full">
+        <LazyLoad>
           <Image
             alt="Product image"
-            className="aspect-square w-full h-[280px] rounded-md object-cover"
-            src={imageValidation}
+            className="aspect-square w-full h-[280px] rounded-md object-cover bg-muted"
+            src={imageValidation || 'https://ui.shadcn.com/placeholder.svg'}
             width={400}
             height={400}
           />
@@ -113,13 +114,5 @@ export default function CardProduct({ data, href }: Props) {
         </CardFooter>
       )}
     </Card>
-  );
-
-  return href ? (
-    <div onClick={() => router.push(href)}>
-      <Component />
-    </div>
-  ) : (
-    <Component />
   );
 }

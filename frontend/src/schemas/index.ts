@@ -97,12 +97,18 @@ export const AdminSchema = z.object({
     .max(255, {
       message: 'Name must be less than 255 characters',
     }),
-  address: z.string().max(255, {
-    message: 'Address must be less than 255 characters',
-  }),
-  contact: z.string().max(15, {
-    message: 'Contact must be less than 15 characters',
-  }),
+  address: z
+    .string()
+    .max(255, {
+      message: 'Address must be less than 255 characters',
+    })
+    .nullable(),
+  contact: z
+    .string()
+    .max(15, {
+      message: 'Contact must be less than 15 characters',
+    })
+    .nullable(),
   role: z.string(),
 });
 

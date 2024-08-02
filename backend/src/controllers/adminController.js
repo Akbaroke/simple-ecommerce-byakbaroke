@@ -45,7 +45,7 @@ export const updateUserById = async (req, res) => {
       },
     });
 
-    res.json(updatedUser);
+    res.json({ message: 'User updated successfully.' });
   } catch (err) {
     res.status(400).json({ error: 'Failed to update user' });
   }

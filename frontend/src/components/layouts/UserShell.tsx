@@ -20,14 +20,21 @@ import { MdOutlineShoppingCart } from 'react-icons/md';
 import { FaRegHeart } from 'react-icons/fa';
 import TooltipFrag from '../molecules/TooltipFrag';
 import { Badge } from '../ui/badge';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { StoreModel } from '@/interfaces/redux-model';
+import { usePathname } from 'next/navigation';
+import { setSearchSlice } from '@/redux/slices/searchSlice';
+import { useCurrentRole } from '@/hooks/use-current-role';
 
 export default function UserShell({ children }: { children: React.ReactNode }) {
+  const dispatch = useDispatch();
   const cart = useSelector((state: StoreModel) => state.cart);
   const favorite = useSelector((state: StoreModel) => state.favorite);
+  const search = useSelector((state: StoreModel) => state.search);
   const user = useCurrentUser();
+  const role = useCurrentRole();
   const router = useRouter();
+  const pathname = usePathname();
 
   return (
     <div className="flex min-h-screen w-full flex-col">
@@ -42,14 +49,20 @@ export default function UserShell({ children }: { children: React.ReactNode }) {
         </nav>
         <div className="flex w-full items-center gap-4 md:ml-auto md:gap-2 lg:gap-4">
           <form className="ml-auto flex-1 sm:flex-initial">
-            <div className="relative">
-              <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-              <Input
-                type="search"
-                placeholder="Search products..."
-                className="pl-8 sm:w-[300px] md:w-[200px] lg:w-[300px]"
-              />
-            </div>
+            {['/', '/favorite'].includes(pathname) && (
+              <div className="relative">
+                <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+                <Input
+                  type="search"
+                  placeholder="Search products..."
+                  className="pl-8 sm:w-[300px] md:w-[200px] lg:w-[300px]"
+                  value={search.value}
+                  onChange={(e) => {
+                    dispatch(setSearchSlice(e.target.value));
+                  }}
+                />
+              </div>
+            )}
           </form>
           <TooltipFrag content="View Favorites">
             <Button
@@ -121,11 +134,13 @@ export default function UserShell({ children }: { children: React.ReactNode }) {
                   onClick={() => router.push('/profile')}>
                   Profile
                 </DropdownMenuItem>
-                <DropdownMenuItem
-                  className="cursor-pointer"
-                  onClick={() => router.push('/admin')}>
-                  Dashboard Admin
-                </DropdownMenuItem>
+                {role === 'ADMIN' && (
+                  <DropdownMenuItem
+                    className="cursor-pointer"
+                    onClick={() => router.push('/admin')}>
+                    Dashboard Admin
+                  </DropdownMenuItem>
+                )}
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
                   className="cursor-pointer"

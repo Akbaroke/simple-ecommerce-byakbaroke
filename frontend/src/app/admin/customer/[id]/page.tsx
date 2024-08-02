@@ -26,6 +26,13 @@ import Notify from '@/components/molecules/Notify';
 import { getUserById, updateUser } from '@/service/user';
 import { UserModel } from '@/interfaces/user';
 import { useRouter } from 'next-nprogress-bar';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 
 export default function CustomerDetailPage({
   params,
@@ -150,6 +157,7 @@ export default function CustomerDetailPage({
                       <FormControl>
                         <Input
                           {...field}
+                          value={field.value as string}
                           min={0}
                           type="number"
                           disabled={isPending}
@@ -168,10 +176,34 @@ export default function CustomerDetailPage({
                       <FormControl>
                         <Textarea
                           {...field}
+                          value={field.value as string}
                           disabled={isPending}
                           placeholder="Jl. Jend. Sudirman No. .."
                         />
                       </FormControl>
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="role"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Role</FormLabel>
+                      <Select
+                        {...field}
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}>
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select a role" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="USER">USER</SelectItem>
+                          <SelectItem value="ADMIN">ADMIN</SelectItem>
+                        </SelectContent>
+                      </Select>
                     </FormItem>
                   )}
                 />

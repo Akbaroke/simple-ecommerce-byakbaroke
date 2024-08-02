@@ -114,7 +114,7 @@ export default function CartPage() {
               data-aos="fade-up"
               key={index}
               className="flex gap-8 p-5 w-full items-center hover:bg-muted rounded-lg transition-all duration-300">
-              <LazyLoad className="w-full">
+              <LazyLoad>
                 <Image
                   src={product.image || 'https://ui.shadcn.com/placeholder.svg'}
                   alt={product.name}
