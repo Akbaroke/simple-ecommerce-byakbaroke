@@ -1,9 +1,12 @@
-const authorizeRole = (role) => {
+const authorizeRole = (requiredRole) => {
   return (req, res, next) => {
-    if (req.user.role !== role) {
-      return res.sendStatus(403);
+    const { role } = req.user;
+
+    if (role !== requiredRole) {
+      return res.status(403).json({ error: 'Forbidden: You do not have the required role' });
     }
-    next();
+
+    next(); 
   };
 };
 
